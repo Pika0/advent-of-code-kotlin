@@ -9,8 +9,18 @@ fun main() {
         return lines.size
     }
 
-//    // Test if implementation meets criteria from the description, like:
-//    check(part1("""test_input""")) == 1)
+
+
+//    val sampleInput=""""""
+//    val check1 = part1(sampleInput)
+//    check ( check1 ==  ) {
+//        println("check1=$check1")
+//    }
+//    val check2 = part2(sampleInput)
+//    check(check2 ==  ){
+//        println("check2=$check2")
+//    }
+
 //
 //    // Or read a large test input from the `src/Day%%0DAY%%_test.txt` file:
 //    val testInput = readInput("Day%%0DAY%%_test")
