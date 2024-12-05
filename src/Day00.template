@@ -11,11 +11,11 @@ fun main() {
 //    check(part1(listOf("test_input")) == 1)
 //
 //    // Or read a large test input from the `src/Day01_test.txt` file:
-//    val testInput = readInput("Day01_test")
+//    val testInput = readInput("Day0%%DAY%%_test")
 //    check(part1(testInput) == 1)
 
     // Read the input from the `src/Day01.txt` file.
-    val input = loadAndReadInput(1, 2024)
+    val input = loadAndReadInput(%%DAY%%, 2024)
     part1(input).println()
     part2(input).println()
 }
