@@ -47,6 +47,21 @@ fun loadAndReadInput(day: Int, year: Int): List<String> {
         } finally {
             connection.disconnect()
         }
+
+        //here, we prepare the code file for the next day as well
+        if (day<25){
+            val nextDay = day+1
+            val nextDayPadded = nextDay.toString().padStart(2, '0')
+            val nextDayFile = File("src/day${nextDayPadded}.kt")
+            if (!nextDayFile.exists()) {
+                val templateFile = File("src/day00.template")
+                val template = templateFile.readText()
+                    .replace("%%DAY%%", nextDay.toString())
+                    .replace("%%0DAY%%", nextDayPadded)
+                nextDayFile.writeText(template)
+            }
+
+        }
     }
     return readInput("${name}_input")
 }
