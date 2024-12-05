@@ -1,15 +1,12 @@
 fun main() {
-    fun part1(lines: List<String>): Int {
+    fun part1(input: String): Int {
         val regex = Regex("""mul\((\d+),(\d+)\)""")
-        return lines.sumOf{ line ->
-            regex.findAll(line).sumOf{match ->
-                match.groupValues[1].toInt() * match.groupValues[2].toInt()
-            }
+        return regex.findAll(input).sumOf{match ->
+            match.groupValues[1].toInt() * match.groupValues[2].toInt()
         }
     }
 
-    fun part2(linesList: List<String>): Int {
-        val input = linesList.joinToString("\n")
+    fun part2(input: String): Int {
         var enabled = true
         var position = 0
         var total = 0

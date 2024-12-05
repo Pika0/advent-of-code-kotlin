@@ -1,5 +1,6 @@
 fun main() {
-    fun part1(lines: List<String>): Int {
+    fun part1(input: String): Int {
+        val lines = input.lines()
         val list1 = mutableListOf<Int>() //alternate: arrayListOf<Int>()
         val list2 = mutableListOf<Int>() // or maybe even: linkedListOf<Int>()
         lines.forEach{
@@ -20,7 +21,8 @@ fun main() {
         return sum
     }
 
-    fun part2(lines: List<String>): Int {
+    fun part2(input: String): Int {
+        val lines = input.lines()
         val list1 = mutableListOf<Int>() //
         val list2 = HashMap<Int, Int>() //
         var sum = 0

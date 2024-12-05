@@ -1,14 +1,16 @@
 fun main() {
-    fun part1(lines: List<String>): Int {
+    fun part1(input: String): Int {
+        val lines = input.lines()
         return lines.size
     }
 
-    fun part2(lines: List<String>): Int {
+    fun part2(input: String): Int {
+        val lines = input.lines()
         return lines.size
     }
 
 //    // Test if implementation meets criteria from the description, like:
-//    check(part1(listOf("test_input")) == 1)
+//    check(part1("""test_input""")) == 1)
 //
 //    // Or read a large test input from the `src/Day%%0DAY%%_test.txt` file:
 //    val testInput = readInput("Day%%0DAY%%_test")

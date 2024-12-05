@@ -1,5 +1,6 @@
 fun main() {
-    fun part1(lines: List<String>): Int {
+    fun part1(input: String): Int {
+        val lines = input.lines()
         val grid = InfiniteGrid('.')
         lines.withIndex().forEach{ (y, line) ->
             line.withIndex().forEach { (x,c) ->
@@ -30,7 +31,8 @@ fun main() {
         return total
     }
 
-    fun part2(lines: List<String>): Int {
+    fun part2(input: String): Int {
+        val lines = input.lines()
         val grid = InfiniteGrid('.')
         lines.withIndex().forEach{ (y, line) ->
             line.withIndex().forEach { (x,c) ->
@@ -63,7 +65,7 @@ XXAMMXXAMA
 SMSMSASXSS
 SAXAMASAAA
 MAMMMXMMMM
-MXMXAXMASX""".lines()) == 18)
+MXMXAXMASX""") == 18)
     val r= part2("""MMMSXXMASM
 MSAMXMSMSA
 AMXSXMAAMM
@@ -73,7 +75,7 @@ XXAMMXXAMA
 SMSMSASXSS
 SAXAMASAAA
 MAMMMXMMMM
-MXMXAXMASX""".lines())
+MXMXAXMASX""")
     check( r== 9){
         println("incorrect value: $r")
     }

@@ -1,7 +1,8 @@
 import kotlin.math.abs
 
 fun main() {
-    fun part1(lines: List<String>): Int {
+    fun part1(input: String): Int {
+        val lines = input.lines()
         return lines.map{ line->
             val levels = line.split(" ").map{it.toInt()}
             val correct = if (levels[1] < levels[0]){
@@ -133,7 +134,8 @@ fun main() {
             return true //correct!
         }
     }
-    fun part2(lines: List<String>): Int {
+    fun part2(input: String): Int {
+        val lines = input.lines()
         return lines.map{ line->
             val levels = line.split(" ").map{it.toInt()}
 
@@ -142,18 +144,18 @@ fun main() {
     }
 
     // Test if implementation meets criteria from the description, like:
-    check(part1(("7 6 4 2 1\n" +
+    check(part1("7 6 4 2 1\n" +
             "1 2 7 8 9\n" +
             "9 7 6 2 1\n" +
             "1 3 2 4 5\n" +
             "8 6 4 4 1\n" +
-            "1 3 6 7 9").lines()) == 2)
-    check(part2(("7 6 4 2 1\n" +
+            "1 3 6 7 9") == 2)
+    check(part2("7 6 4 2 1\n" +
             "1 2 7 8 9\n" +
             "9 7 6 2 1\n" +
             "1 3 2 4 5\n" +
             "8 6 4 4 1\n" +
-            "1 3 6 7 9").lines()) == 4)
+            "1 3 6 7 9") == 4)
 //
 //    // Or read a large test input from the `src/Day02_test.txt` file:
 //    val testInput = readInput("Day02_test")
