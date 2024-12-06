@@ -1,5 +1,5 @@
 @Suppress("MemberVisibilityCanBePrivate","unused")
-class InfiniteGrid<T>(private val defaultValue: T) {
+class InfiniteGrid<T>(private val defaultValueFactory: () -> T) {
 
     private val grid = mutableMapOf<Pair<Int, Int>, T>()
     var minX: Int = 0
@@ -8,13 +8,15 @@ class InfiniteGrid<T>(private val defaultValue: T) {
     var maxY: Int = 0
     private var minMaxSet = false
 
+
+
     // Accessor to get a value from the grid. If the value is not set, return the default value.
     operator fun get(x: Int, y: Int): T {
-        return grid.getOrDefault(Pair(x, y), defaultValue)
+        return grid.getOrPut(Pair(x, y)) { defaultValueFactory() }
     }
     // Accessor to get a value from the grid by coordinates (x, y) pair
     operator fun get(position: Pair<Int, Int>): T {
-        return grid.getOrDefault(position, defaultValue)
+        return grid.getOrPut(position) { defaultValueFactory() }
     }
 
     // Mutator to set a value at a specific coordinate
@@ -58,7 +60,7 @@ class InfiniteGrid<T>(private val defaultValue: T) {
     }
 
     fun print(){
-        println("--- grid size: ${maxX-minX} , ${maxY-minY} ---")
+        println("--- grid size: ${maxX-minX+1} , ${maxY-minY+1} ---")
         for (y in minY..maxY){
             for (x in minX..maxX){
                 print(this[x, y])
@@ -67,7 +69,7 @@ class InfiniteGrid<T>(private val defaultValue: T) {
         }
     }
     fun print(characterMapper: ((T) -> Char)) {
-        println("--- grid size: ${maxX - minX}, ${maxY - minY} ---")
+        println("--- grid size: ${maxX - minX+1}, ${maxY - minY+1} ---")
         for (y in minY..maxY) {
             for (x in minX..maxX) {
                 print( characterMapper( this[x, y] ) )
