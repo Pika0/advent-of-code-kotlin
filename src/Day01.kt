@@ -1,3 +1,9 @@
+//the link to the github repository for this project
+// https://github.com/Pika0/advent-of-code-kotlin
+
+//kotlin official AoC livestreams
+// https://www.youtube.com/playlist?list=PLlFc5cFwUnmwHaD3-qeoLHnho_PY2g9JX
+
 fun main() {
     fun part1(input: String): Int {
         val lines = input.lines()
