@@ -10,13 +10,29 @@ fun main() {
     }
 
 
-
-//    val sampleInput=""""""
-//    val check1 = part1(sampleInput)
-//    check ( check1 ==  ) { "check1=$check1" }
-//
-//    val check2 = part2(sampleInput)
-//    check(check2 ==  ){ "check2=$check2" }
+    val samplesAndTargets: List<Triple<String, Int?, Int?>> = listOf(
+        Triple(
+            """
+""",
+            null, null
+        ),
+    )
+    samplesAndTargets.withIndex().forEach { (index, sample) ->
+        val (inputWithNewline, p1Target, p2Target) = sample
+        val input = inputWithNewline.trim('\n')
+        if (p1Target != null) {
+            val check1 = part1(input)
+            check(check1 == p1Target) {
+                println("sample input[$index] part-1:  $check1 instead of $p1Target")
+            }
+        }
+        if (p2Target != null) {
+            val check2 = part2(input)
+            check(check2 == p2Target) {
+                println("sample input[$index] part-2:  $check2 instead of $p2Target")
+            }
+        }
+    }
 
 //
 //    // Or read a large test input from the `src/Day%%0DAY%%_test.txt` file:
