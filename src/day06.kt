@@ -76,6 +76,12 @@ fun main() {
     fun part2(input: String): Int {
         //time for attempt 3!
 
+        val input : String = run{
+            val inputFileName = "src/day06_input_david.txt"
+            Path(inputFileName).readText().trim()
+        }
+
+
         val lines = input.lines()
         val grid = InfiniteGrid('·')
         var startX = -1
@@ -95,7 +101,7 @@ fun main() {
 
         //load correct answer from algorithm#3's solution
         @Suppress("NAME_SHADOWING")
-        val correctObstacleLocations : Set<Pair<Int,Int>> = run{
+        val correctObstacleLocations : MutableSet<Pair<Int,Int>> = run{
             val inputFileName = "src/day06_correct_locations.txt"
             val input = Path(inputFileName).readText().trim()
             val lines = input.lines()
@@ -103,7 +109,7 @@ fun main() {
                 val parts = line.split(" ")
                 val nums = parts.map{it.toInt()}
                 nums[0] to nums[1]
-            }.toSet()
+            }.toMutableSet()
         }
 
 
@@ -146,10 +152,13 @@ fun main() {
                 val c = charForDir(testDir)
                 if (c == testGrid[testPosX, testPosY]) {
                     if ( Pair(fakeX, fakeY) !in correctObstacleLocations ){
-                        print("bad obstacle found at $fakeX,$fakeY")
                         printFirstFew(true)
-                        throw IllegalStateException("bad obstacle found at $fakeX,$fakeY")
+                        print("   ^^^ missed obstacle found at $fakeX,$fakeY")
+                        if (obstaclesPrinted>10) {
+                            throw IllegalStateException("10 missed obstacles found")
+                        }
                     }
+                    correctObstacleLocations.remove (Pair(fakeX, fakeY))
 
                     newObstaclePossibilities[fakeX, fakeY] = 'o'
                     return
@@ -219,6 +228,12 @@ fun main() {
             else if (c == 'X') '+'
             else c
         }
+//        correctObstacleLocations
+        println("${correctObstacleLocations.size} remaining: ")
+        correctObstacleLocations.take(10).forEach{
+            print(it)
+        }
+
         return total
         //1267 too low
         //1289 too low

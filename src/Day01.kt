@@ -1,4 +1,4 @@
-//the link to the github repository for this project
+//the link to the gitHub repository for this project
 // https://github.com/Pika0/advent-of-code-kotlin
 
 //kotlin official AoC livestreams

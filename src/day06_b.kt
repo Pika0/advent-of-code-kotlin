@@ -59,6 +59,7 @@ fun main() {
     }
 
 
+    @Suppress("unused")
     fun charForDir(dir: Pair<Int, Int>): Char {
         return when (dir) {
             Pair(0, -1) -> '^'
@@ -88,6 +89,7 @@ fun main() {
                 posY = nextY
             }
         }
+        @Suppress("RedundantIf", "RedundantSuppression")
         if (lifetime<=0) return true
         return false
     }
@@ -207,6 +209,30 @@ fun main() {
 ...^.#...
 .......#.""",
             null, 0
+        ),
+        Triple(
+            """
+..#.......
+..........
+......#...
+.#..^.....
+....##....
+#.........
+...#......""",
+            null, 1
+        ),
+        Triple(
+            """
+.....#..
+......#.
+.#......
+......#.
+........
+........
+.^...#..
+........
+""",
+            null, 2
         ),
     )
     samplesAndTargets.withIndex().forEach { (index, sample) ->

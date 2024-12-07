@@ -7,7 +7,7 @@ fun main() {
             val levels = line.split(" ").map{it.toInt()}
             val correct = if (levels[1] < levels[0]){
                 //decreasing
-                levels.windowed(2).all(){ pair ->
+                levels.windowed(2).all{ pair ->
                     val a = pair[0]
                     val b = pair[1]
                     if (b>=a) false
@@ -17,7 +17,7 @@ fun main() {
             }
             else{
                 //increasing
-                levels.windowed(2).all(){ pair ->
+                levels.windowed(2).all{ pair ->
                     val a = pair[0]
                     val b = pair[1]
                     if (b<=a) false
