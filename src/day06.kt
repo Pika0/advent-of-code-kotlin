@@ -73,9 +73,10 @@ fun main() {
 
 
 
-    fun part2(input: String): Int {
+    fun part2(@Suppress("UNUSED_PARAMETER") input: String): Int {
         //time for attempt 3!
 
+        @Suppress("NAME_SHADOWING")
         val input : String = run{
             val inputFileName = "src/day06_input_david.txt"
             Path(inputFileName).readText().trim()
