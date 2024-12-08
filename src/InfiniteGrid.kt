@@ -29,10 +29,18 @@ class InfiniteGrid<T>(private val defaultValue: T) {
     operator fun get(position: Pair<Int, Int>): T {
         return grid.getOrPut(position) { defaultValue }
     }
+    // Accessor to get a value from the grid by coordinates (x, y) pair
+    operator fun get(position: Int2): T {
+        return grid.getOrPut(position.toPair()) { defaultValue }
+    }
 
     // Mutator to set a value at a specific coordinate
     operator fun set(x: Int, y: Int, value: T) {
         set(Pair(x, y), value)
+    }
+    // Mutator to set a value at a specific coordinate
+    operator fun set(position: Int2, value: T) {
+        set(position.toPair(), value)
     }
     // Mutator to set a value at a specific coordinate (x, y) pair
     operator fun set(position: Pair<Int, Int>, value: T) {
