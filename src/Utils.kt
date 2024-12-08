@@ -8,6 +8,16 @@ import java.security.MessageDigest
 import kotlin.io.path.Path
 import kotlin.io.path.readText
 
+
+private val <A, B> Pair<A, B>.x: A
+    get() {
+        return first
+    }
+private val <A, B> Pair<A, B>.y: B
+    get() {
+        return second
+    }
+
 /**
  * Reads lines from the given input txt file.
  */

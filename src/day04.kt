@@ -1,6 +1,6 @@
 fun main() {
     fun part1(input: String): Int {
-        val lines = input.lines()
+        val lines: List<String> = input.lines()
         val grid = InfiniteGrid('.')
         lines.withIndex().forEach{ (y, line) ->
             line.withIndex().forEach { (x,c) ->

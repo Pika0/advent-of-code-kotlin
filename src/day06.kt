@@ -102,7 +102,8 @@ fun main() {
         //load correct answer from algorithm#3's solution
         @Suppress("NAME_SHADOWING")
         val correctObstacleLocations : MutableSet<Pair<Int,Int>> = run{
-            val inputFileName = "src/day06_correct_locations.txt"
+//            val inputFileName = "src/day06_correct_locations.txt"
+            val inputFileName = "src/day06_davids_found.txt"
             val input = Path(inputFileName).readText().trim()
             val lines = input.lines()
             lines.map{ line ->
@@ -158,7 +159,7 @@ fun main() {
                             throw IllegalStateException("10 missed obstacles found")
                         }
                     }
-                    correctObstacleLocations.remove (Pair(fakeX, fakeY))
+//                    correctObstacleLocations.remove (Pair(fakeX, fakeY))
 
                     newObstaclePossibilities[fakeX, fakeY] = 'o'
                     return

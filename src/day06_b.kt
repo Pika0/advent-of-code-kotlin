@@ -113,7 +113,6 @@ fun main() {
             }
         }
         grid.updateBounds(0 to 0)
-//        grid.updateBounds(lines.first().length-1 to lines.size-1)
 
 
         var total = 0
