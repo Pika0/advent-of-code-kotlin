@@ -1,16 +1,16 @@
 fun main() {
-    fun part1(input: String): Int {
+    fun part1(input: String): Long {
         val lines = input.lines()
         return lines.size
     }
 
-    fun part2(input: String): Int {
+    fun part2(input: String): Long {
         val lines = input.lines()
         return lines.size
     }
 
 
-    val samplesAndTargets: List<Triple<String, Int?, Int?>> = listOf(
+    val samplesAndTargets: List<Triple<String, Long?, Long?>> = listOf(
         Triple(
             """
 """,
