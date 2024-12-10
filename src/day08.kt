@@ -14,7 +14,7 @@ fun main() {
             }
         }
         val antinodeMap = mutableSetOf<Int2>()
-        antennaeLocations.forEach{ (c,positions) ->
+        antennaeLocations.forEach{ (_,positions) ->
             // every combination pair of matching antennae
             positions.withIndex().forEach{(i1, a)->
                 positions.drop(i1+1).forEach { b ->
@@ -48,7 +48,7 @@ fun main() {
             }
         }
         val antinodeMap = mutableSetOf<Int2>()
-        antennaeLocations.forEach{ (c,positions) ->
+        antennaeLocations.forEach{ (_,positions) ->
             // every combination pair of matching antennae
             positions.withIndex().forEach{(i1, a)->
                 positions.drop(i1+1).forEach { b ->
