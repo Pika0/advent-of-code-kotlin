@@ -1,12 +1,12 @@
 fun main() {
     fun part1(input: String): Long {
         val lines = input.lines()
-        return lines.size
+        return lines.size.toLong()
     }
 
     fun part2(input: String): Long {
         val lines = input.lines()
-        return lines.size
+        return lines.size.toLong()
     }
 
 
