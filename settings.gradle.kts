@@ -1,6 +1,7 @@
 rootProject.name = "advent-of-code-kotlin"
 
 dependencyResolutionManagement {
+    @Suppress("UnstableApiUsage")
     repositories {
         mavenCentral()
 
