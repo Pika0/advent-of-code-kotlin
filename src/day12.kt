@@ -67,8 +67,9 @@ fun main() {
 
         var sum: Long = 0
         areaCellsByID.map { (id,cells) ->
-            val numFences: Int = cells.sumOf{ cell->
-                directions.sumOf { direction ->
+            @Suppress("RemoveRedundantCallsOfConversionMethods") //req for overload resolution of sumOf
+            val numFences: Int = cells.sumOf { cell:Int2->
+                directions.sumOf { direction:Int2 ->
                     if(areaIDMap[cell+direction]!=id) 1.toInt()
                     else 0.toInt()
                 }
@@ -159,10 +160,10 @@ fun main() {
             var fenceSides = 0
             directions.forEach{possibleFenceSide->
                 //still unchecked?
-                val temfences = fenceCounted[x,y]
+//                val temfences = fenceCounted[x,y]
                 if(fenceCounted[x,y][possibleFenceSide]) return@forEach
                 //then check!
-                val tempAreaMapCell = areaIDMap[x+possibleFenceSide.x, y+possibleFenceSide.y]
+//                val tempAreaMapCell = areaIDMap[x+possibleFenceSide.x, y+possibleFenceSide.y]
                 if(areaIDMap[x+possibleFenceSide.x, y+possibleFenceSide.y]!=id){
                     val fenceSidesThis  = countThisFenceLoop(x,y,possibleFenceSide,id)
                     fenceSides += fenceSidesThis
