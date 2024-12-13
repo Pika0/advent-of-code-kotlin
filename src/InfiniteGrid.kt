@@ -107,4 +107,8 @@ class InfiniteGrid<T>(private val defaultValue: T) {
         }
 
     }
+
+    override fun toString(): String{
+        return "InfiniteGrid(${defaultValue.toString()}){${maxX-minX+1}x${maxY-minY+1}}"
+    }
 }

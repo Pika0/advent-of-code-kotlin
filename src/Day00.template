@@ -32,6 +32,7 @@ fun main() {
                 println("sample input[$index] part-2:  $check2 instead of $p2Target")
             }
         }
+        println("example $index: passed")
     }
 
 //
@@ -41,6 +42,10 @@ fun main() {
 
     // download input (if needed) into day%%0DAY%%.txt.  return list of lines
     val input = loadAndReadInput(%%DAY%%, 2024)
-    println("part 1 answer: ${part1(input)}")
-    println("part 2 answer: ${part2(input)}")
+    val part1Ans = part1(input)
+    println("part 1 answer: $part1Ans")
+//    check(part1Ans==) //check while refactoring
+    val part2Ans = part2(input)
+    println("part 2 answer: $part2Ans")
+//    check(part2Ans==) //check while refactoring
 }

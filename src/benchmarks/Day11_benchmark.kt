@@ -272,6 +272,110 @@ open class Day11_benchmark {
         return ans
     }
 
+
+    @Benchmark
+    fun part2h_eExceptTOStringInQuotes(): Long {
+        @Suppress("LocalVariableName")
+        val stoneTransform_memo = hashMapOf<Long, List<Long>>()
+        @Suppress("LocalVariableName")
+        val stonesFromBlinks_memo = hashMapOf<Pair<Long, Int>, Long>()
+        fun stonesFromBlinks(stone: Long, numberOfBlinks: Int): Long{
+            val key = Pair(stone, numberOfBlinks)
+            val numStones =
+                if (key in stonesFromBlinks_memo)  stonesFromBlinks_memo[key]!!
+                else if (numberOfBlinks==0)   1
+                else {
+                    val nextStones = stoneTransform_memo.getOrPut(stone) transformStone@{
+                        if (stone == 0L) return@transformStone listOf(1)
+                        val s = "$stone"
+                        if (s.length % 2 == 0) {
+                            return@transformStone listOf(
+                                s.substring(0, s.length / 2).toLong(),
+                                s.substring(s.length / 2).toLong()
+                            )
+                        }
+                        return@transformStone listOf(stone * 2024)
+                    }
+                    nextStones.sumOf { nextStone -> stonesFromBlinks(nextStone, numberOfBlinks - 1) }
+                }
+            stonesFromBlinks_memo[key] = numStones
+            return numStones
+        }
+        val lines = inputFileString.lines()
+        val stones = lines[0].split(" ").map { it.toLong() }
+
+        val numBlink = 75
+        val ans = stones.sumOf{ stone -> stonesFromBlinks(stone, numBlink)}
+        check(ans == 205913561055242) {"incorrect answer!"}
+        return ans
+    }
+
+    @Benchmark
+    fun part2_david(): Long {
+        fun Long.canSplit(): Boolean = "$this".length %2==0
+        fun Long.blink(): List<Long> = when {
+            this == 0L -> listOf(1)
+            this.canSplit() -> "$this".chunked("$this".length / 2) {s -> s.toString().toLong()}
+            else -> listOf(this * 2024)
+        }
+        var stones: Map<Long, Long> = inputFileString.split(' ')
+            .groupingBy { it.toLong() }.eachCount().mapValues { it.value.toLong() }
+        repeat(75) {
+            stones = stones.flatMap{ (stone, multiplier) -> stone.blink().map{s -> s to multiplier}}
+                .groupingBy{it.first}.fold(0) {acc, s -> acc + s.second}
+        }
+        val ans =  stones.values.sum()
+        check(ans == 205913561055242) {"incorrect answer!"}
+        return ans
+
+    }
+
+
+    @Benchmark
+    fun part2_david_LongBlinkMemoized(): Long {
+
+        fun Long.canSplit(): Boolean = "$this".length %2==0
+        val long_blink_memo = hashMapOf<Long, List<Long>>()
+        fun Long.blink(): List<Long> = long_blink_memo.getOrPut(this) {when {
+            this == 0L -> listOf(1)
+            this.canSplit() -> "$this".chunked("$this".length / 2) {s -> s.toString().toLong()}
+            else -> listOf(this * 2024)
+        }}
+
+        var stones: Map<Long, Long> = inputFileString.split(' ')
+            .groupingBy { it.toLong() }.eachCount().mapValues { it.value.toLong() }
+        repeat(75) {
+            stones = stones.flatMap{ (stone, multiplier) -> stone.blink().map{s -> s to multiplier}}
+                .groupingBy{it.first}.fold(0) {acc, s -> acc + s.second}
+        }
+        val ans =  stones.values.sum()
+        check(ans == 205913561055242) {"incorrect answer!"}
+        return ans
+    }
+
+    @Benchmark
+    fun part2_david_andCanSplitMemoized(): Long {
+
+        val long_canSplit_memo = hashMapOf<Long, Boolean>()
+        fun Long.canSplit(): Boolean = long_canSplit_memo.getOrPut(this) { "$this".length %2==0 }
+        val long_blink_memo = hashMapOf<Long, List<Long>>()
+        fun Long.blink(): List<Long> = long_blink_memo.getOrPut(this) {when {
+            this == 0L -> listOf(1)
+            this.canSplit() -> "$this".chunked("$this".length / 2) {s -> s.toString().toLong()}
+            else -> listOf(this * 2024)
+        }}
+
+        var stones: Map<Long, Long> = inputFileString.split(' ')
+            .groupingBy { it.toLong() }.eachCount().mapValues { it.value.toLong() }
+        repeat(75) {
+            stones = stones.flatMap{ (stone, multiplier) -> stone.blink().map{s -> s to multiplier}}
+                .groupingBy{it.first}.fold(0) {acc, s -> acc + s.second}
+        }
+        val ans =  stones.values.sum()
+        check(ans == 205913561055242) {"incorrect answer!"}
+        return ans
+    }
+
 /* singleShotTime(100 each)
 Benchmark                                            Mode  Cnt   Score   Error  Units
 Day11_benchmark.part2a_initial                         ss  100  37.301 ± 3.393  ms/op
@@ -317,6 +421,35 @@ Day11_benchmark.part2d_memoBlinksUsesPut               ss        96.116         
 Day11_benchmark.part2e_inlineStoneTransform            ss        97.661          ms/op
 Day11_benchmark.part2f_partialStoneTransformNoLists    ss        67.672          ms/op
 Day11_benchmark.part2g_eExceptMemoBlinksNoPut          ss        96.848          ms/op
+
+
+
+
+                                                                         Score
+Day11_benchmark.part2_david                          avgt       45.528  52.834        ms/op
+Day11_benchmark.part2_david_LongBlinkMemoized        avgt       37.971  44.786        ms/op
+Day11_benchmark.part2_david_andCanSplitMemoized      avgt       37.792  42.593        ms/op
+Day11_benchmark.part2a_initial                       avgt       47.338  42.447        ms/op
+Day11_benchmark.part2b_keyBeforeZero                 avgt       44.805  43.168        ms/op
+Day11_benchmark.part2c_memoTransform                 avgt       54.260  39.751        ms/op
+Day11_benchmark.part2d_memoBlinksUsesPut             avgt       41.924  39.101        ms/op
+Day11_benchmark.part2e_inlineStoneTransform          avgt       34.739  29.766        ms/op
+Day11_benchmark.part2f_partialStoneTransformNoLists  avgt       35.752  31.221        ms/op
+Day11_benchmark.part2g_eExceptMemoBlinksNoPut        avgt       37.948  33.189        ms/op
+Day11_benchmark.part2h_eExceptTOStringInQuotes       avgt       34.835  35.218        ms/op
+
+Benchmark                                            Mode  Cnt   Score   Error  Units
+Day11_benchmark.part2_david                          avgt       52.834          ms/op
+Day11_benchmark.part2_david_LongBlinkMemoized        avgt       44.786          ms/op
+Day11_benchmark.part2_david_andCanSplitMemoized      avgt       42.593          ms/op
+Day11_benchmark.part2a_initial                       avgt       42.447          ms/op
+Day11_benchmark.part2b_keyBeforeZero                 avgt       43.168          ms/op
+Day11_benchmark.part2c_memoTransform                 avgt       39.751          ms/op
+Day11_benchmark.part2d_memoBlinksUsesPut             avgt       39.101          ms/op
+Day11_benchmark.part2e_inlineStoneTransform          avgt       29.766          ms/op
+Day11_benchmark.part2f_partialStoneTransformNoLists  avgt       31.221          ms/op
+Day11_benchmark.part2g_eExceptMemoBlinksNoPut        avgt       33.189          ms/op
+Day11_benchmark.part2h_eExceptTOStringInQuotes       avgt       35.218          ms/op
 
 
 
