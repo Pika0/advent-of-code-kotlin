@@ -25,6 +25,7 @@ fun main() {
             this.loc = Int2(x, y)
         }
     }
+    @Suppress("unused")
     fun part1(input: String, width: Int =101, height: Int =103): Long {
         val lines = input.lines()
         val bots: List<Bot> = lines.map { line ->
@@ -92,6 +93,7 @@ fun main() {
         while (true) {
             seconds += 1
             bots.forEach { it.advance(width, height) }
+            @Suppress("USELESS_CAST")
             val pictureScore: Int = bots.mapIndexed { index, bot ->
                 bots.drop(index+1).sumOf { bot2 ->
                     if (bot.loc.x == bot2.loc.x && bot.loc.y == bot2.loc.y) 0
@@ -122,6 +124,7 @@ fun main() {
 //    val testInput = readInput("Day14_test")
 //    check(part1(testInput) == 1)
 
+    @Suppress("VARIABLE_WITH_REDUNDANT_INITIALIZER")
     var input = ""
 //    input = loadAndReadInput(14, 2024)
 //    println("part 2 answer: ${part2(input)}")

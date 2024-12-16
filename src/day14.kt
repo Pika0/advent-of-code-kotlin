@@ -75,6 +75,7 @@ fun main() {
         while (true) {
             seconds += 1
             bots.forEach { it.advance(width, height) }
+            @Suppress("USELESS_CAST")
             val pictureScore: Int = bots.mapIndexed { index, bot ->
                 bots.drop(index+1).sumOf { bot2 ->
                     if (bot.loc.x == bot2.loc.x || bot.loc.y == bot2.loc.y) 0
