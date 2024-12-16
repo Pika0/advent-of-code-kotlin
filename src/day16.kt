@@ -247,6 +247,8 @@ fun main() {
         traverseReverse(goalStates.first())
         maze.print()
         var total = 0L
+
+        @Suppress("UNUSED_DESTRUCTURED_PARAMETER_ENTRY")
         maze.forEach { (x,y), c ->
             if(c=='O') total += 1
             else if (c=='S' || c=='E'){
