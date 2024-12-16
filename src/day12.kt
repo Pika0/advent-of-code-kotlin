@@ -179,7 +179,7 @@ fun main() {
                 numFences += lookForFenceLoopsAndCount(cell.x, cell.y, id)
             }
 
-//            println("id $id has $numFences fences and ${cells.size} area, totalling ${numFences * cells.size} cost")
+            println("id $id has $numFences sides and ${cells.size} area, totalling ${numFences * cells.size} cost")
             sum += numFences * cells.size
         }
 
@@ -264,6 +264,24 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 """,
             68628, 6776
+        ),
+        Triple(
+            """
+AAAA
+ABBA
+ABBA
+AAAA
+""",
+            320, 112
+        ),
+        Triple(
+            """
+AAAA
+AABA
+ABBA
+AABA
+""",
+            328, 176
         ),
     )
     samplesAndTargets.withIndex().forEach { (index, sample) ->

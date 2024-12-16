@@ -1,23 +1,28 @@
 import kotlin.math.sqrt
 
 @Suppress("unused")
-data class Int3(var x: Int, var y: Int, var z: Int) {
+data class Long3(var x: Long, var y: Long, var z: Long) {
 
     fun length(): Double = sqrt((x * x + y * y + z * z).toDouble())
 
-    operator fun plus(other: Int3): Int3 = Int3(this.x + other.x, this.y + other.y, this.z + other.z)
-    operator fun minus(other: Int3): Int3 = Int3(this.x - other.x, this.y - other.y, this.z - other.z)
-    operator fun times(scalar: Int): Int3 = Int3(this.x * scalar, this.y * scalar, this.z * scalar)
-    operator fun div(scalar: Int): Int3 {
-        require(scalar != 0) { "Cannot divide Int3 by 0" }
-        return Int3(this.x / scalar, this.y / scalar, this.z / scalar)
+    operator fun plus(other: Long3): Long3 = Long3(this.x + other.x, this.y + other.y, this.z + other.z)
+    operator fun minus(other: Long3): Long3 = Long3(this.x - other.x, this.y - other.y, this.z - other.z)
+    operator fun times(scalar: Long): Long3 = Long3(this.x * scalar, this.y * scalar, this.z * scalar)
+    operator fun div(scalar: Long): Long3 {
+        require(scalar != 0L) { "Cannot divide Long3 by 0" }
+        return Long3(this.x / scalar, this.y / scalar, this.z / scalar)
     }
 
-    fun asLinearCombinationOf(a: Int3, b: Int3, c: Int3): Int3? {
+    operator fun div(scalar: Double): Double3 {
+        require(scalar != 0.0) { "Cannot divide Long3 by 0" }
+        return Double3(this.x.toDouble() / scalar, this.y.toDouble() / scalar, this.z.toDouble() / scalar)
+    }
+
+    fun asLinearCombinationOf(a: Long3, b: Long3, c: Long3): Long3? {
         val matrixDet = a.x * (b.y * c.z - b.z * c.y) - a.y * (b.x * c.z - b.z * c.x) + a.z * (b.x * c.y - b.y * c.x)
 
         // Check if the determinant is 0 (the vectors must be linearly independent)
-        if (matrixDet != 0) {
+        if (matrixDet != 0L) {
 
             val detA =
                 this.x * (b.y * c.z - b.z * c.y) - this.y * (b.x * c.z - b.z * c.x) + this.z * (b.x * c.y - b.y * c.x)
@@ -26,15 +31,15 @@ data class Int3(var x: Int, var y: Int, var z: Int) {
             val detC =
                 a.x * (b.y * this.z - b.z * this.y) - a.y * (b.x * this.z - b.z * this.x) + a.z * (b.x * this.y - b.y * this.x)
 
-            if (detA % matrixDet != 0 || detB % matrixDet != 0 || detC % matrixDet != 0) return null
+            if (detA % matrixDet != 0L || detB % matrixDet != 0L || detC % matrixDet != 0L) return null
             // Compute the coefficients for the linear combination
             val coeffA = detA / matrixDet
             val coeffB = detB / matrixDet
             val coeffC = detC / matrixDet
-            return Int3(coeffA, coeffB, coeffC)
+            return Long3(coeffA, coeffB, coeffC)
         }
 //        else{
-//            val abCross = Int3(
+//            val abCross = Long3(
 //                a.y * b.z - a.z * b.y,
 //                a.z * b.x - a.x * b.z,
 //                a.x * b.y - a.y * b.x
@@ -49,14 +54,14 @@ data class Int3(var x: Int, var y: Int, var z: Int) {
 //                if (abDet != 0) {
 //                    val coeffA = (this.x * b.y - this.y * b.x) / abDet
 //                    val coeffB = (a.x * this.y - a.y * this.x) / abDet
-//                    return Int3(coeffA, coeffB, 0)  // No need for coeffC since c isn't needed in this case
+//                    return Long3(coeffA, coeffB, 0)  // No need for coeffC since c isn't needed in this case
 //                }
 //            }
 //        }
         return null
     }
 
-    override fun toString(): String = "Int3(x=$x, y=$y, z=$z)"
+    override fun toString(): String = "Long3(x=$x, y=$y, z=$z)"
     fun toDouble3(): Double3 = Double3(x.toDouble(), y.toDouble(), z.toDouble())
-    fun toTriple(): Triple<Int, Int, Int> = Triple(x, y, z)
+    fun toTriple(): Triple<Long, Long, Long> = Triple(x, y, z)
 }

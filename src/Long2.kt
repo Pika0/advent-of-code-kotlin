@@ -16,10 +16,10 @@ data class Long2(var x: Long, var y: Long) {
     fun  asLinearCombinationOf(a:Long2, b:Long2): Long2? {
         val aNum = this.x * b.y - this.y * b.x
         val aDenom = a.x * b.y - a.y * b.x
-        val timesAOK = aNum.rem(aDenom)==0L
+        val timesAOK = aNum % aDenom==0L
         val bNum = this.x * a.y - this.y * a.x
         val bDenom = a.y * b.x - a.x * b.y
-        val timesBOK = bNum.rem(bDenom)==0L
+        val timesBOK = bNum % bDenom==0L
 
         if(timesAOK && timesBOK) {
             val timesA = aNum / aDenom

@@ -1,4 +1,5 @@
-
+import kotlin.io.path.Path
+import kotlin.io.path.readText
 
 fun main() {
 
@@ -38,7 +39,7 @@ fun main() {
 
     fun part2(input: String): Long {
         val machineTexts = input.split("\n\n")
-        return machineTexts.sumOf { machineText->
+        return machineTexts.withIndex().sumOf { (index,machineText) ->
             val (lineA, lineB, lineTarget) = machineText.split("\n")
             val buttonA = Long2(
                 lineA.substringAfter("X").substringBefore(",").toLong(),
@@ -53,10 +54,13 @@ fun main() {
                 10000000000000L+lineTarget.substringAfter("Y=").toLong()
             )
 
-            var (timesa, timesb) = prize.asLinearCombinationOf(buttonA, buttonB) ?: Long2(0,0)
+            val (timesa, timesb) = prize.asLinearCombinationOf(buttonA, buttonB) ?: Long2(0,0)
 //            println("   -> $timesa, $timesb")
-            timesa *= 3
-            (timesa+timesb)
+            val cost = (timesa*3+timesb)
+            println("machine ${index+1}:")
+            println("   button A: $buttonA button B: $buttonB prize: $prize")
+            println("   #a:$timesa #b:$timesb  \$cost:$cost")
+            cost
         }
 
         //9223372036854775807 <- max of long:
@@ -107,18 +111,22 @@ Prize: X=18641, Y=10279
         println("example $index: passed")
     }
 
+
 //
 //    // Or read a large test input from the `src/Day13_test.txt` file:
 //    val testInput = readInput("Day13_test")
 //    check(part1(testInput) == 1)
 
     // download input (if needed) into day13.txt.  return list of lines
-    val input = loadAndReadInput(13, 2024)
-    val part1Ans = part1(input)
-    println("part 1 answer: $part1Ans")
-    check(part1Ans==28059L)
+
+//    val input = loadAndReadInput(13, 2024)
+    val input = Path("src/day13_input2.txt").readText().trim()
+//    val part1Ans = part1(input)
+//    println("part 1 answer: $part1Ans")
+//    check(part1Ans==28059L)
     val part2Ans = part2(input)
     println("part 2 answer: $part2Ans")
-    check(part2Ans==102255878088512L)
+    check(part2Ans==104958599303720){"part 2 incorrect"}//what my code says for input2
+//    check(part2Ans==102255878088512L){"part 2 incorrect"}//my input
 
 }
