@@ -324,7 +324,7 @@ fun main() {
         println("example $index: passed")
     }
 
-//
+
 //    // Or read a large test input from the `src/Day16_test.txt` file:
 //    val testInput = readInput("Day16_test")
 //    check(part1(testInput) == 1)
