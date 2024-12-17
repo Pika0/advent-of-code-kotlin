@@ -18,7 +18,7 @@ fun main() {
         val key = Pair(stone, numberOfBlinks)
         if (key in stonesFromBlinks_memo) return stonesFromBlinks_memo[key]!!
         val nextStones = stoneTransform(stone)
-        val numStones = nextStones.sumOf{stone-> stonesFromBlinks(stone, numberOfBlinks-1) }
+        val numStones = nextStones.sumOf{ stone2-> stonesFromBlinks(stone2, numberOfBlinks-1) }
         stonesFromBlinks_memo[key] = numStones
         return numStones
     }
