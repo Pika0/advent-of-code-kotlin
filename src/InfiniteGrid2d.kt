@@ -1,5 +1,5 @@
 @Suppress("MemberVisibilityCanBePrivate","unused")
-class InfiniteGrid<T>(private val defaultValue: T) {
+class InfiniteGrid2d<T>(private val defaultValue: T) {
 
     private val grid = mutableMapOf<Pair<Int, Int>, T>()
     var minX: Int = 0
@@ -8,8 +8,8 @@ class InfiniteGrid<T>(private val defaultValue: T) {
     var maxY: Int = 0
     private var minMaxSet = false
 
-    fun copy(): InfiniteGrid<T> {
-        val ng = InfiniteGrid(defaultValue)
+    fun copy(): InfiniteGrid2d<T> {
+        val ng = InfiniteGrid2d(defaultValue)
         ng.minX = minX
         ng.maxX = maxX
         ng.minY = minY
@@ -23,15 +23,15 @@ class InfiniteGrid<T>(private val defaultValue: T) {
 
     // Accessor to get a value from the grid. If the value is not set, return the default value.
     operator fun get(x: Int, y: Int): T {
-        return grid.getOrPut(Pair(x, y)) { defaultValue }
+        return grid.getOrElse(Pair(x, y)) { defaultValue }
     }
     // Accessor to get a value from the grid by coordinates (x, y) pair
     operator fun get(position: Pair<Int, Int>): T {
-        return grid.getOrPut(position) { defaultValue }
+        return grid.getOrElse(position) { defaultValue }
     }
     // Accessor to get a value from the grid by coordinates (x, y) pair
     operator fun get(position: Int2): T {
-        return grid.getOrPut(position.toPair()) { defaultValue }
+        return grid.getOrElse(position.toPair()) { defaultValue }
     }
 
     // Mutator to set a value at a specific coordinate
@@ -97,7 +97,7 @@ class InfiniteGrid<T>(private val defaultValue: T) {
         }
     }
 
-    fun printWithIndex(characterMapper: (Int,Int,T) -> T) {
+    fun printWithIndex(characterMapper: (Int,Int,T) -> Char) {
         println("--- grid size: ${maxX - minX+1}, ${maxY - minY+1} ---")
         for (y in minY..maxY) {
             for (x in minX..maxX) {
@@ -109,6 +109,6 @@ class InfiniteGrid<T>(private val defaultValue: T) {
     }
 
     override fun toString(): String{
-        return "InfiniteGrid(${defaultValue.toString()}){${maxX-minX+1}x${maxY-minY+1}}"
+        return "InfiniteGrid2d(${defaultValue.toString()}){${maxX-minX+1}x${maxY-minY+1}}"
     }
 }
