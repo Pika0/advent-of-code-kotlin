@@ -11,6 +11,7 @@ fun main() {
         return listOf(stone * 2024)
     }
 
+    @Suppress("LocalVariableName")
     val stonesFromBlinks_memo = hashMapOf<Pair<Long, Int>, Long>()
     fun stonesFromBlinks(stone: Long, numberOfBlinks: Int): Long{
         if (numberOfBlinks==0) return 1

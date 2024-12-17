@@ -37,20 +37,20 @@ fun main() {
         val lines = input.lines()
         val height=lines.size
         val width = lines[0].length
-        val map = InfiniteGrid('.')
+        val map = InfiniteGrid2d('.')
         lines.forEachIndexed{y, line ->
             line.forEachIndexed{x, c ->
                 map[x,y]=c
             }
         }
-        val areaIDMap = InfiniteGrid(-1)
+        val areaIDMap = InfiniteGrid2d(-1)
         val areaCellsByID=mutableMapOf<Int,MutableList<Int2>>()
         fun exploreAndLabelArea(x:Int,y:Int, areaLabel:Char, id: Int){
             if (areaIDMap[x,y]!=-1) return
             if (x<0 || y<0 || x>map.maxX || y>map.maxY) return
             if (map[x,y]!=areaLabel) return
             areaIDMap[x,y] = id
-            areaCellsByID.getOrPut(id){mutableListOf<Int2>()}.add(Int2(x,y))
+            areaCellsByID.getOrPut(id){mutableListOf()}.add(Int2(x,y))
             directions.forEach{direction ->
                 exploreAndLabelArea(x+direction.x,y+direction.y, areaLabel, id)
             }
@@ -86,20 +86,20 @@ fun main() {
         val lines = input.lines()
         val height=lines.size
         val width = lines[0].length
-        val map = InfiniteGrid('.')
+        val map = InfiniteGrid2d('.')
         lines.forEachIndexed{y, line ->
             line.forEachIndexed{x, c ->
                 map[x,y]=c
             }
         }
-        val areaIDMap = InfiniteGrid(-1)
+        val areaIDMap = InfiniteGrid2d(-1)
         val areaCellsByID=mutableMapOf<Int,MutableList<Int2>>()
         fun exploreAndLabelArea(x:Int,y:Int, areaLabel:Char, id: Int){
             if (areaIDMap[x,y]!=-1) return
             if (x<0 || y<0 || x>map.maxX || y>map.maxY) return
             if (map[x,y]!=areaLabel) return
             areaIDMap[x,y] = id
-            areaCellsByID.getOrPut(id){mutableListOf<Int2>()}.add(Int2(x,y))
+            areaCellsByID.getOrPut(id){mutableListOf()}.add(Int2(x,y))
             directions.forEach{direction ->
                 exploreAndLabelArea(x+direction.x,y+direction.y, areaLabel, id)
             }
@@ -114,9 +114,11 @@ fun main() {
         }
         if(lines.size<50) areaIDMap.print()
 
+        @Suppress("BooleanLiteralArgument")
         val fenceCounted =
-            InfiniteGrid(DirectionalStorage(false, false, false, false))
+            InfiniteGrid2d(DirectionalStorage(false, false, false, false))
         map.forEach{(x,y),_ ->
+            @Suppress("BooleanLiteralArgument")
             fenceCounted[x,y] = DirectionalStorage(false, false, false, false)
         }
         fun countThisFenceLoop(xStart:Int, yStart:Int, fenceSideStart:Int2, id:Int): Int{

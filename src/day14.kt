@@ -7,8 +7,8 @@ fun main() {
             var y = (loc.y + vel.y * seconds) % height
             if (x < 0) x += width
             if (y < 0) y += height
-            check(0 <= x && x < width)
-            check(0 <= y && y < height)
+            check(x in 0..<width)
+            check(y in 0..<height)
             return Int2(x, y)
         }
 
@@ -17,8 +17,8 @@ fun main() {
             var y = (loc.y + vel.y) % height
             if (x < 0) x += width
             if (y < 0) y += height
-            check(0 <= x && x < width)
-            check(0 <= y && y < height)
+            check(x in 0..<width)
+            check(y in 0..<height)
             this.loc = Int2(x, y)
         }
     }
@@ -60,7 +60,7 @@ fun main() {
             bot
         }
         fun drawBots(){
-            val grid=InfiniteGrid(0)
+            val grid=InfiniteGrid2d(0)
             bots.forEach{bot->
                 grid[bot.loc.x,bot.loc.y] += 1
             }

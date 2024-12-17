@@ -5,7 +5,7 @@ fun main() {
         Int2(-1, 0),
         Int2( 0, 1),
     )
-    fun findEnds(grid: InfiniteGrid<Int>, current:Int2): Set<Int2>{
+    fun findEnds(grid: InfiniteGrid2d<Int>, current:Int2): Set<Int2>{
         if (grid[current]==9) return setOf(current)
         val results: MutableSet<Int2> = mutableSetOf()
         directions.forEach{ direction ->
@@ -16,9 +16,9 @@ fun main() {
         return results
     }
     fun part1(input: String): Int {
-        val areaMap = InfiniteGrid(-1)
+        val areaMap = InfiniteGrid2d(-1)
         val starts = emptySet<Int2>().toMutableSet()
-        input.lines().forEachIndexed(){ y, line ->
+        input.lines().forEachIndexed { y, line ->
             line.forEachIndexed{ x, c ->
                 areaMap[x,y]=c.digitToInt()
                 if (c=='0') starts.add(Int2(x,y))
@@ -30,7 +30,7 @@ fun main() {
         }
     }
 
-    fun findPaths(grid: InfiniteGrid<Int>, current:Int2): Long{
+    fun findPaths(grid: InfiniteGrid2d<Int>, current:Int2): Long{
         if (grid[current]==9) return 1
         var results: Long = 0
         directions.forEach{ direction ->
@@ -41,9 +41,9 @@ fun main() {
         return results
     }
     fun part2(input: String): Long {
-        val areaMap = InfiniteGrid(-1)
+        val areaMap = InfiniteGrid2d(-1)
         val starts = emptySet<Int2>().toMutableSet()
-        input.lines().forEachIndexed(){ y, line ->
+        input.lines().forEachIndexed { y, line ->
             line.forEachIndexed{ x, c ->
                 areaMap[x,y]=c.digitToInt()
                 if (c=='0') starts.add(Int2(x,y))

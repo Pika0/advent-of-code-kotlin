@@ -21,7 +21,7 @@ fun main() {
 
     fun part1(input: String): Int {
         val lines = input.lines()
-        val grid = InfiniteGrid('.')
+        val grid = InfiniteGrid2d('.')
         var posX = -1
         var posY = -1
         var dir = Pair(0, -1)
@@ -71,7 +71,7 @@ fun main() {
     }
     val emptySpaceChar='·'
 
-    fun tryEscapeDidLoop(grid: InfiniteGrid<Char>, startX: Int, startY: Int, startDir: Pair<Int,Int>): Boolean {
+    fun tryEscapeDidLoop(grid: InfiniteGrid2d<Char>, startX: Int, startY: Int, startDir: Pair<Int,Int>): Boolean {
         var lifetime = 25000
         var posX = startX
         var posY = startY
@@ -97,7 +97,7 @@ fun main() {
         //time for attempt 3!
 
         val lines = input.lines()
-        val grid = InfiniteGrid(emptySpaceChar)
+        val grid = InfiniteGrid2d(emptySpaceChar)
         var startX = -1
         var startY = -1
         val startDir = Pair(0, -1)

@@ -21,7 +21,7 @@ fun main() {
         var botLoc = Int2(-1, -1)
         val (map, roboMoves) = run {
             val (mapStr, roboMovesStr) = input.split("\n\n")
-            val map = InfiniteGrid('.')
+            val map = InfiniteGrid2d('.')
             mapStr.lines().forEachIndexed { y, line ->
                 line.forEachIndexed { x, c ->
                     map[x, y] = c
@@ -32,6 +32,7 @@ fun main() {
             return@run Pair(map, roboMoves)
         }
         check(botLoc != Int2(-1, -1)) { "bot not found in map" }
+        @Suppress("FunctionName")
         fun tryPush_IsSuccess(objectLoc: Int2, dir: Int2): Boolean {
             if (map[objectLoc] == '#') return false //cannot push walls
             if (map[objectLoc] == '.') return true //empty space: previous push attempt OK
@@ -68,7 +69,7 @@ fun main() {
         var botLoc = Int2(-1, -1)
         val (map, roboMoves) = run {
             val (mapStr, roboMovesStr) = input.split("\n\n")
-            val map = InfiniteGrid('.')
+            val map = InfiniteGrid2d('.')
             mapStr.lines().forEachIndexed { y, line ->
                 line.forEachIndexed { x, c ->
                     when (c) {
@@ -175,7 +176,8 @@ fun main() {
         }
 //        println("start:")
 //        map.print()
-        roboMoves.forEachIndexed() { moveNum,moveChar ->
+        @Suppress("UNUSED_ANONYMOUS_PARAMETER")
+        roboMoves.forEachIndexed { moveNum, moveChar ->
             val moveDir = dirFromChar(moveChar)
 //            println("$moveNum next dir: $moveChar")
             if (canPush(botLoc, moveDir)) {

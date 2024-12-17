@@ -23,7 +23,7 @@ fun main() {
 
     fun part1(input: String): Int {
         val lines = input.lines()
-        val grid = InfiniteGrid('.')
+        val grid = InfiniteGrid2d('.')
         var posX = -1
         var posY = -1
         var dir = Pair(0, -1)
@@ -84,7 +84,7 @@ fun main() {
 
 
         val lines = input.lines()
-        val grid = InfiniteGrid('·')
+        val grid = InfiniteGrid2d('·')
         var startX = -1
         var startY = -1
         val startDir = Pair(0, -1)
@@ -123,7 +123,7 @@ fun main() {
         var posY = startY
         var dir = startDir
 
-        val newObstaclePossibilities = InfiniteGrid('·')
+        val newObstaclePossibilities = InfiniteGrid2d('·')
         var obstacleNum = 0
         var obstaclesPrinted = 0
         fun testFakeObstacle(startX: Int, startY: Int, startDir: Pair<Int, Int>, fakeX: Int, fakeY: Int) {

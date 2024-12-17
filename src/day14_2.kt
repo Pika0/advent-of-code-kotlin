@@ -64,7 +64,7 @@ fun main() {
             bot
         }
         fun drawBots(){
-            val grid=InfiniteGrid(0)
+            val grid=InfiniteGrid2d(0)
             bots.forEach{bot->
                 grid[bot.loc.x,bot.loc.y] += 1
             }

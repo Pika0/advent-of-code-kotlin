@@ -10,7 +10,7 @@ import java.util.concurrent.*
 ./gradlew benchmark  -Pbenchmark.filter=Day11_benchmark
  */
 
-@Suppress("ClassName")
+@Suppress("ClassName", "LocalVariableName")
 @State(Scope.Benchmark)
 @Fork(1)
 @Warmup(iterations = 0) //0.5s each if timed

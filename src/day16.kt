@@ -33,7 +33,7 @@ fun main() {
 
     fun part1(input: String): Long {
         val lines = input.lines()
-        val maze = InfiniteGrid('.')
+        val maze = InfiniteGrid2d('.')
         var start = Int2(-1,-1)
         var goal = Int2(-1,-1)
         lines.forEachIndexed { y, line ->
@@ -64,7 +64,7 @@ fun main() {
         }
 
 
-        val mazeCosts = InfiniteGrid(MazeSquareBests(999999,999999,999999,999999))
+        val mazeCosts = InfiniteGrid2d(MazeSquareBests(999999,999999,999999,999999))
 
         class MazeState(val position:Int2, val dir:Int2, val cost:Int){
             val goalDist = abs(position.x-goal.x)+abs(position.y-goal.y)
@@ -128,7 +128,7 @@ fun main() {
 
     fun part2(input: String): Long {
         val lines = input.lines()
-        val maze = InfiniteGrid('.')
+        val maze = InfiniteGrid2d('.')
         var start = Int2(-1,-1)
         var goal = Int2(-1,-1)
         lines.forEachIndexed { y, line ->
@@ -159,7 +159,7 @@ fun main() {
         }
 
 
-        val mazeCosts = InfiniteGrid(MazeSquareBests(999999,999999,999999,999999))
+        val mazeCosts = InfiniteGrid2d(MazeSquareBests(999999,999999,999999,999999))
 
         class MazeState(val position:Int2, val dir:Int2, val cost:Int){
             val goalDist = abs(position.x-goal.x)+abs(position.y-goal.y)

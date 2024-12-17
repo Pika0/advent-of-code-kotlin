@@ -1,7 +1,7 @@
 fun main() {
     fun part1(input: String): Int {
         val lines: List<String> = input.lines()
-        val grid = InfiniteGrid('.')
+        val grid = InfiniteGrid2d('.')
         lines.withIndex().forEach{ (y, line) ->
             line.withIndex().forEach { (x,c) ->
                 grid[x,y]=c
@@ -33,7 +33,7 @@ fun main() {
 
     fun part2(input: String): Int {
         val lines = input.lines()
-        val grid = InfiniteGrid('.')
+        val grid = InfiniteGrid2d('.')
         lines.withIndex().forEach{ (y, line) ->
             line.withIndex().forEach { (x,c) ->
                 grid[x,y]=c
