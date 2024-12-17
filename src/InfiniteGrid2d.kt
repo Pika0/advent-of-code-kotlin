@@ -78,24 +78,15 @@ class InfiniteGrid2d<T>(private val defaultValue: T) {
         }
     }
 
-    fun print(){
-        println("--- grid size: ${maxX-minX+1} , ${maxY-minY+1} ---")
-        for (y in minY..maxY){
-            for (x in minX..maxX){
-                print(this[x, y])
-            }
-            println("")
+    fun print() = this.print { c ->
+        when(c){
+            is Int -> c.digitToChar()
+            is Long -> c.toInt().digitToChar()
+            is Char -> c
+            else -> throw IllegalArgumentException("must use characterMapper. grid item is: $c")
         }
     }
-    fun print(characterMapper: (T) -> Char) {
-        println("--- grid size: ${maxX - minX+1}, ${maxY - minY+1} ---")
-        for (y in minY..maxY) {
-            for (x in minX..maxX) {
-                print( characterMapper( this[x, y] ) )
-            }
-            println("")  // Move to the next line after each row
-        }
-    }
+    fun print(characterMapper: (T) -> Char) = printWithIndex { _, _, c -> characterMapper(c) }
 
     fun printWithIndex(characterMapper: (Int,Int,T) -> Char) {
         println("--- grid size: ${maxX - minX+1}, ${maxY - minY+1} ---")

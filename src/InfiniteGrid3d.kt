@@ -1,3 +1,5 @@
+
+
 @Suppress("MemberVisibilityCanBePrivate","unused")
 class InfiniteGrid3d<T>(private val defaultValue: T) {
 
@@ -91,18 +93,25 @@ class InfiniteGrid3d<T>(private val defaultValue: T) {
         }
     }
 
-    fun printAll() = printAllWithIndex { _, _, _, c -> c }
+    fun printAll() = printAll { c ->
+        when(c){
+            is Int -> c.digitToChar()
+            is Long -> c.toInt().digitToChar()
+            is Char -> c
+            else -> throw IllegalArgumentException("must use characterMapper. grid item is: $c")
+        }
+    }
 
-    fun printAll(characterMapper: (T) -> T) {
+    fun printAll(characterMapper: (T) -> Char) {
         printAllWithIndex { _, _, _, c -> characterMapper(c) }
     }
 
-    fun printAllWithIndex(characterMapper: (Int, Int, Int, T) -> T) {
+    fun printAllWithIndex(characterMapper: (Int, Int, Int, T) -> Char) {
         println("--- grid size: ${maxX - minX + 1} , ${maxY - minY + 1} , ${maxZ - minZ + 1} ---")
         for (z in minZ..maxZ) {
             println("  layer $z (from $minZ to $maxZ)")
             for (y in minY..maxY) {
-                print("    ")
+                print("     ")
                 for (x in minX..maxX) {
                     print(characterMapper(x, y, z, this[x, y, z]))
                 }
@@ -111,11 +120,18 @@ class InfiniteGrid3d<T>(private val defaultValue: T) {
         }
     }
 
-    fun print2dSlice(z:Int) = print2dSlice(z) { _, _, _, c -> c }
-    fun print2dSlice(z:Int, characterMapper: (T) -> T) {
+    fun print2dSlice(z:Int) = print2dSlice(z) { _, _, _, c ->
+        when(c){
+            is Int -> c.digitToChar()
+            is Long -> c.toInt().digitToChar()
+            is Char -> c
+            else -> throw IllegalArgumentException("must use characterMapper. grid item is: $c")
+        }
+    }
+    fun print2dSlice(z:Int, characterMapper: (T) ->  Char) {
         print2dSlice(z) { _, _, _, c -> characterMapper(c) }
     }
-    fun print2dSlice(z:Int, characterMapper: (Int, Int, Int, T) -> T) {
+    fun print2dSlice(z:Int, characterMapper: (Int, Int, Int, T) -> Char) {
         println("--- grid size: ${maxX - minX + 1} , ${maxY - minY + 1} , ${maxZ - minZ + 1} ---")
         println("slice:  layer $z (from $minZ to $maxZ)")
         for (y in minY..maxY) {
