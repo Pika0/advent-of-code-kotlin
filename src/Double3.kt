@@ -2,7 +2,7 @@ import kotlin.math.abs
 import kotlin.math.sqrt
 
 @Suppress("unused")
-data class Double3(var x: Double, var y: Double, var z: Double) {
+data class Double3(val x: Double, val y: Double, val z: Double) {
 
     fun length(): Double = sqrt((x * x + y * y + z * z))
 

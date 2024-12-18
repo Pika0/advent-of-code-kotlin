@@ -1,7 +1,7 @@
 import kotlin.math.sqrt
 
 @Suppress("unused")
-data class Long3(var x: Long, var y: Long, var z: Long) {
+data class Long3(val x: Long, val y: Long, val z: Long) {
 
     fun length(): Double = sqrt((x * x + y * y + z * z).toDouble())
 

@@ -1,7 +1,7 @@
 import kotlin.math.sqrt
 
 @Suppress("unused")
-data class Int2(var x: Int, var y: Int) {
+data class Int2(val x: Int, val y: Int) {
 
     fun length(): Double = sqrt((x * x + y * y).toDouble())
 
@@ -32,4 +32,27 @@ data class Int2(var x: Int, var y: Int) {
     override fun toString(): String = "Int2(x=$x, y=$y)"
     fun toDouble2(): Double2 = Double2(x.toDouble(), y.toDouble())
     fun toPair(): Pair<Int,Int> = Pair(x, y)
+
+
+    fun rotateRight(): Int2 = Int2(-y, x)
+    fun rotateLeft(): Int2 = Int2(y, -x)
+    companion object Directions {
+        val compass4 = listOf(
+            Int2(1, 0),  // East
+            Int2(0, -1), // North
+            Int2(-1, 0), // West
+            Int2(0, 1)   // South
+        )
+
+        val neighbors8 = listOf(
+            Int2(1, 0),   // East
+            Int2(1, -1),  // Northeast
+            Int2(0, -1),  // North
+            Int2(-1, -1), // Northwest
+            Int2(-1, 0),  // West
+            Int2(-1, 1),  // Southwest
+            Int2(0, 1),   // South
+            Int2(1, 1)    // Southeast
+        )
+    }
 }
