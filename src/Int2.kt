@@ -13,15 +13,15 @@ data class Int2(val x: Int, val y: Int) {
         return Int2(this.x / scalar, this.y / scalar)
     }
 
-    fun  asLinearCombinationOf(a:Int2, b:Int2): Int2? {
+    fun asLinearCombinationOf(a: Int2, b: Int2): Int2? {
         val aNum = this.x * b.y - this.y * b.x
         val aDenom = a.x * b.y - a.y * b.x
-        val timesAOK = aNum % aDenom==0
+        val timesAOK = aNum % aDenom == 0
         val bNum = this.x * a.y - this.y * a.x
         val bDenom = a.y * b.x - a.x * b.y
-        val timesBOK = bNum % bDenom==0
+        val timesBOK = bNum % bDenom == 0
 
-        if(timesAOK && timesBOK) {
+        if (timesAOK && timesBOK) {
             val timesA = aNum / aDenom
             val timesB = bNum / bDenom
             return Int2(timesA, timesB)
@@ -31,11 +31,12 @@ data class Int2(val x: Int, val y: Int) {
 
     override fun toString(): String = "Int2(x=$x, y=$y)"
     fun toDouble2(): Double2 = Double2(x.toDouble(), y.toDouble())
-    fun toPair(): Pair<Int,Int> = Pair(x, y)
+    fun toPair(): Pair<Int, Int> = Pair(x, y)
 
 
     fun rotateRight(): Int2 = Int2(-y, x)
     fun rotateLeft(): Int2 = Int2(y, -x)
+
     companion object Directions {
         val compass4 = listOf(
             Int2(1, 0),  // East

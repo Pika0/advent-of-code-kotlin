@@ -59,4 +59,25 @@ data class Int3(val x: Int, val y: Int, val z: Int) {
     override fun toString(): String = "Int3(x=$x, y=$y, z=$z)"
     fun toDouble3(): Double3 = Double3(x.toDouble(), y.toDouble(), z.toDouble())
     fun toTriple(): Triple<Int, Int, Int> = Triple(x, y, z)
+
+    companion object Directions {
+        val axes6 = listOf(
+            Int3(1, 0, 0),   // Positive X
+            Int3(-1, 0, 0),   // Negative X
+            Int3(0, 1, 0),   // Positive Y
+            Int3(0, -1, 0),   // Negative Y
+            Int3(0, 0, 1),   // Positive Z
+            Int3(0, 0, -1)    // Negative Z
+        )
+
+        val neighbors26 = listOf(
+            Int3(1, 0, 0), Int3(-1, 0, 0), Int3(0, 1, 0), // Axes
+            Int3(0, -1, 0), Int3(0, 0, 1), Int3(0, 0, -1), // Axes
+            Int3(1, 1, 0), Int3(-1, -1, 0), Int3(1, -1, 0), Int3(-1, 1, 0),  // XY plane diagonals
+            Int3(1, 0, 1), Int3(-1, 0, -1), Int3(1, 0, -1), Int3(-1, 0, 1),  // XZ plane diagonals
+            Int3(0, 1, 1), Int3(0, -1, -1), Int3(0, 1, -1), Int3(0, -1, 1),  // YZ plane diagonals
+            Int3(1, 1, 1), Int3(-1, -1, -1), Int3(1, -1, 1), Int3(-1, 1, -1),  // 3D diagonals
+            Int3(1, -1, -1), Int3(-1, 1, 1), Int3(1, 1, -1), Int3(-1, -1, 1)   // 3D diagonals
+        )
+    }
 }
