@@ -3,7 +3,7 @@ import kotlin.math.abs
 
 fun main() {
 
-    fun part1(input: String): Long {
+    fun part1(input: String, timeToSave: Int = 100): Long {
         val lines = input.lines()
         //first, path from start to end
         //next, path from end to start
@@ -117,7 +117,7 @@ fun main() {
                 if (goalDistance!=-1){ //valid cheat end?
                     val pathDistance = startDistance+2+goalDistance
                     val distanceSavings = noncheatDistance-pathDistance
-                    if (distanceSavings>0) {
+                    if (distanceSavings>=timeToSave) {
                         numberOfCheatsBySavings[distanceSavings] = 1 + numberOfCheatsBySavings.getOrElse(distanceSavings){0}
                     }
                 }
@@ -126,10 +126,10 @@ fun main() {
         }
         println("$numberOfCheatsBySavings")
 
-        return numberOfCheatsBySavings.filter { (key, _) -> key >= 100 }.values.sum().toLong()
+        return numberOfCheatsBySavings.filter { (key, _) -> key >= timeToSave }.values.sum().toLong()
     }
 
-    fun part2(input: String): Long {
+    fun part2(input: String, timeToSave: Int = 100): Long {
         val lines = input.lines()
         //first, path from start to end
         //next, path from end to start
@@ -236,7 +236,7 @@ fun main() {
                     if (goalDistance==-1) continue //end point invalid
                     val pathDistance = startDistance+cheatDistance+goalDistance
                     val distanceSavings = noncheatDistance-pathDistance
-                    if (distanceSavings>50) {
+                    if (distanceSavings>=timeToSave) {
                         numberOfCheatsBySavings[distanceSavings] = 1 + numberOfCheatsBySavings.getOrElse(distanceSavings){0}
                     }
 
@@ -246,11 +246,11 @@ fun main() {
         }
         println("$numberOfCheatsBySavings")
 
-        return numberOfCheatsBySavings.filter { (key, _) -> key >= 100 }.values.sum().toLong()
+        return numberOfCheatsBySavings.filter { (key, _) -> key >= timeToSave }.values.sum().toLong()
     }
 
 
-    val samplesAndTargets: List<Triple<String, Long?, Long?>> = listOf(
+    val samplesAndTargets: List<Triple<String, Int, Pair<Long?, Long?>>> = listOf(
         Triple(
             """
 ###############
@@ -269,20 +269,69 @@ fun main() {
 #...#...#...###
 ###############
 """,
-            0, 0
+            50,
+            Pair(1, 285)
+        ),
+        Triple(
+            """
+#########################################
+#...#.............#.....#.....#.....#...#
+###.#.###.#########.###.###.#####.###.#.#
+#...#...#.#.#.....#...#...#.#.........#.#
+#..##.###.#.#####.#####.#.#.#.#####.#.#.#
+#.......#.....#.#.....#.#...#...#...#.#.#
+#.###########.#.#.####.####.#.###########
+#.#.#...#...#.....#.................#...#
+#.#.#.#.#.#.###.#.#.###.#########.#####.#
+#.....#...#.....#...#.........#...#.#.#.#
+#####.#####.#####.#.#.#.#.#######.#.#.#.#
+#.....#.........#.#.#...#...#...#.#...#.#
+#.#########.#######.#####.#.##..###.###.#
+#...#.......#.....#.#...#.#...#.....#...#
+#.###.###########.#.###.#.#.###.#######.#
+#.#.#.............#.....#.#...#...#.....#
+###.#.#####.#####.#.###.#.#####.#####.###
+#...#.#.........#.#...#...#...#.#.....#.#
+###.###.#.#########.#####.###.#.#.#.#.#.#
+#S#.#...#.#.....#.....#.........#.#.#..E#
+#.#.#.#########.#.#########.#.###.#####.#
+#.....#.........#...#.#...#.#.....#...#.#
+###.#####..##.#.#####.#.###.#####.###.###
+#.#.#...#.#.#.#.#...#...#...#.........#.#
+#.#.###.###.#.#.#.#####.####.##.#.#####.#
+#.#.#.#.#.#...#.........#.#...#.#.#...#.#
+#.#.#.#.#.#####.###.#.#.#.###.#.###.###.#
+#...#.......#...#...#.#.#.........#.#...#
+#######.#####.#####.###.#.#.#####.#.###.#
+#.............#.....#.#.#.#.....#.......#
+###############.#####.#.#########.#.#.###
+#.....#...#.#.........#.#...#...#.#.#.#.#
+#.#.#.#.#.#.###.#########.###.###.#####.#
+#.#.#.#.#...........#.#.............#...#
+###.#.#.###.#######.#.#.#.###.###.#.#.###
+#...#...#...#.#...#.#...#...#.#.#.#.#...#
+###.#.#######.#.#.#.###.#####.#..##.#.###
+#.#.#...#.....#.#.#.......#.#.#...#.....#
+#.#.#####.###.#.#.#.#.#####.#####.###.#.#
+#.....#.....#.......#.............#...#.#
+#########################################
+""",
+            30,
+            Pair(0, 299)
         ),
     )
     samplesAndTargets.withIndex().forEach { (index, sample) ->
-        val (inputWithNewline, p1Target, p2Target) = sample
+        val (inputWithNewline, timeToSave, targets) = sample
+        val (p1Target, p2Target) = targets
         val input = inputWithNewline.trim('\n')
         if (p1Target != null) {
-            val check1 = part1(input)
+            val check1 = part1(input, timeToSave)
             check(check1 == p1Target) {
                 println("sample input[$index] part-1:  $check1 instead of $p1Target")
             }
         }
         if (p2Target != null) {
-            val check2 = part2(input)
+            val check2 = part2(input, timeToSave)
             check(check2 == p2Target) {
                 println("sample input[$index] part-2:  $check2 instead of $p2Target")
             }

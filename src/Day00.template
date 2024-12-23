@@ -1,3 +1,5 @@
+import kotlin.system.measureNanoTime
+
 fun main() {
     fun part1(input: String): Long {
         val lines = input.lines()
@@ -19,21 +21,32 @@ fun main() {
         ),
     )
     samplesAndTargets.withIndex().forEach { (index, sample) ->
+        println("--example $index--")
         val (inputWithNewline, p1Target, p2Target) = sample
         val input = inputWithNewline.trim('\n')
         if (p1Target != null) {
-            val check1 = part1(input)
+            println(" part 1")
+            var check1: Long
+            val time = measureNanoTime{
+                check1 = part1(input)
+            }
+            println(" [ms]: ${time/1_000_000.0}")
             check(check1 == p1Target) {
-                println("sample input[$index] part-1:  $check1 instead of $p1Target")
+                println(" 1:  $check1 instead of $p1Target")
             }
         }
         if (p2Target != null) {
-            val check2 = part2(input)
+            println(" part 2")
+            var check2: Long
+            val time = measureNanoTime{
+                check2 = part2(input)
+            }
+            println(" [ms]: ${time/1_000_000.0}")
             check(check2 == p2Target) {
-                println("sample input[$index] part-2:  $check2 instead of $p2Target")
+                println(" 2:  $check2 instead of $p2Target")
             }
         }
-        println("example $index: passed")
+        println("  passed")
     }
 
 //
@@ -43,10 +56,22 @@ fun main() {
 
     // download input (if needed) into day%%0DAY%%.txt.  return list of lines
     val input = loadAndReadInput(%%DAY%%, 2024)
-    val part1Ans = part1(input)
-    println("part 1 answer: $part1Ans")
-//    check(part1Ans==) //check while refactoring
-    val part2Ans = part2(input)
-    println("part 2 answer: $part2Ans")
-//    check(part2Ans==) //check while refactoring
+    println("--real input now--")
+    println("part 1:")
+    var part1Ans: Long
+    val time1 = measureNanoTime{
+        part1Ans = part1(input)
+    }
+    println("  [ms]: ${time1/1_000_000.0}")
+    println("  answer: $part1Ans")
+//    check(part1Ans==) //do check while refactoring
+
+    println("part 2:")
+    var part2Ans: Long
+    val time2 = measureNanoTime{
+        part2Ans = part2(input)
+    }
+    println("  [ms]: ${time2/1_000_000.0}")
+    println("  answer: $part2Ans")
+//    check(part2Ans==) //do check while refactoring
 }
