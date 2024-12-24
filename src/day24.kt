@@ -13,6 +13,16 @@ interface Signal {
         usedBy.add(newUser)
         if(ready) newUser.update()
     }
+    fun usedByShort():String {
+        return usedBy.sortedWith( compareBy<Gate> { it.bitPosition}.thenBy { it.name } ).map {
+            buildString {
+                append(it.name)
+                append("(")
+                append(it.shortType())
+                append(")")
+            }
+        }.joinToString(",")
+    }
     fun update(){
         usedBy.forEach { it.update() }
     }
@@ -25,14 +35,22 @@ data class Input(override val name:String, override var value:Boolean?): Signal{
     override fun toString() = "$name: $value"
 }
 data class Gate(override val name:String, val type:String, val in1:Signal, val in2:Signal): Signal {
+    override val usedBy: MutableSet<Gate> = mutableSetOf() //nullibility error if this line is after 'init'
     init {
         if (type !in listOf("AND","OR","XOR")) throw IllegalArgumentException("unknown type ($type) for gate")
         in1.addUser(this)
         in2.addUser(this)
     }
     override fun toString() = "$name: $value (${in1.name} $type ${in2.name})"
+    fun shortType():String{
+        return when(type){
+            "AND" -> "&"
+            "OR" -> "|"
+            "XOR" -> "^"
+            else -> throw IllegalStateException("unknown type ($type) for gate")
+        }
+    }
 
-    override val usedBy: MutableSet<Gate> = mutableSetOf()
     override var bitPosition: Double = 0.0
     override var value: Boolean? = null
     override fun update() {
@@ -98,6 +116,27 @@ fun main() {
         val zSignals = mutableSetOf<Gate>()
         val middleSignals = mutableSetOf<Gate>()
         val (ins, gates) = input.split("\n\n")
+
+        val nameSwaps = mutableMapOf<String,String>(
+//            "fsh" to "gds", makes a loop
+            //fsh helps make z22
+//            "fsh" to "z21" incorrect
+            //both gate for z21 has something else connected
+            //the inputs for z21 should be nsp and tqh
+            // the gates using those  are currently outputting  vqn(&) and gds(^)
+            "z21" to "gds",
+            // z15 is missing a source: snp is missing entirely. cpp is there instead.
+//            "snp" to "cpp",   Nope. actually, z15 was on the wrong gate.
+            "z15" to "fph",
+            // fix z30?
+            "wrk" to "jrs",
+            "cqk" to "z34",
+        )
+        nameSwaps.keys.toList().forEach { keyName ->
+            val otherName = nameSwaps[keyName]!!
+            nameSwaps[otherName]=keyName
+        }
+
         ins.lines().forEach { line ->
             val name = line.substringBefore(": ")
             val s = Input(name, line.substringAfter(": ") == "1")
@@ -118,7 +157,9 @@ fun main() {
                 val in1 = signalsByName[in1Name]!!
                 val in2 = signalsByName[in2Name]!!
                 val type = parts[1]
-                val name = parts[4]
+                var name = parts[4]
+                if( name in nameSwaps) name = nameSwaps[name]!!
+
                 val s = Gate(name, type, in1, in2)
                 s.update()
                 signalsByName[name] = s
@@ -127,60 +168,111 @@ fun main() {
                 false
             }
         }
+        //this bitPosition and error method was a good idea, but
+        // the swapped wires are actually close to each other. :(
         (xSignals+ySignals+zSignals).forEach { signal ->
             val bitNum = signal.name.substring(1).toDouble()
             signal.bitPosition = bitNum
         }
-        repeat(10){
+        repeat(20){
             middleSignals.forEach { gate ->
                 val ps = gate.usedBy.map{it.bitPosition}.toMutableList()
                 ps.add(gate.in1.bitPosition)
                 ps.add(gate.in2.bitPosition)
-                gate.bitPosition = ps.average()
+                gate.bitPosition = ps.median()!!
             }
         }
-        middleSignals.forEach { gate ->
-            val ps = gate.usedBy.map{abs(it.bitPosition-gate.bitPosition)}.toMutableList()
-            ps.add(abs(gate.in1.bitPosition-gate.bitPosition))
-            ps.add(abs(gate.in2.bitPosition-gate.bitPosition))
-            val averageDistance = ps.average()
-            print("${gate.name}: $averageDistance")
+        var errorsAndSignals = (middleSignals+zSignals).map { gate ->
+            val positionErrors = gate.usedBy.map{abs(it.bitPosition-gate.bitPosition)}.toMutableList()
+            positionErrors.add(abs(gate.in1.bitPosition-gate.bitPosition))
+            positionErrors.add(abs(gate.in2.bitPosition-gate.bitPosition))
+            val averageError = positionErrors.average()
+//            println("${gate.name} error: $averageError")
+            averageError to gate
         }
-//        fun tryAdd(x:Long, y:Long){
-//            //unready everything
-//            signalsByName.forEach { (_, signal) ->
-//                signal.value = null
-//            }
-//            //assign new values
-//            xSignals.forEach { signal ->
-//                val bitNum = signal.name.substring(1).toInt()
-//                signal.value = (x shr bitNum) and 1 == 1L
-//                signal.update()
-//            }
-//            ySignals.forEach { signal ->
-//                val bitNum = signal.name.substring(1).toInt()
-//                signal.value = (y shr bitNum) and 1 == 1L
-//                signal.update()
-//            }
-//            //updates propagate upward, so everything should be ready now.
-//
+        errorsAndSignals = errorsAndSignals.sortedBy { -it.first }
+
+        errorsAndSignals.take(20).forEach { (averageError, gate) ->
+            println("${gate.name} error: $averageError")
+            val ps = gate.usedBy.map{it.bitPosition}.toMutableList()
+            ps.add(gate.in1.bitPosition)
+            ps.add(gate.in2.bitPosition)
+            println("  positions: $ps")
+        }
+
+        if(errorsAndSignals.size<8){
+            return errorsAndSignals
+                .take(4)
+                .map{it.second.name}
+                .sorted()
+                .joinToString(",")
+        }
+//        else{
+//            return errorsAndSignals
+//                .take(8)
+//                .map{it.second.name}
+//                .sorted()
+//                .joinToString(",")
 //        }
-//        fun readZs():Long {
-//            return signalsByName
-//                .filter { (name, _) -> name[0] == 'z' }
-//                .toList().sumOf { (name, signal) ->
-//                    if (signal.value!!)
-//                        pow(2L, (name.substring(1).toLong()))
-//                    else
-//                        0L
-//                }
-//        }
-//
-//        signalsByName.toList().sortedBy { (name, _) -> name }.forEach {
-//            println(it.second)
-//        }
-//        return readZs()
-        return "TODO"
+        //incorrect:    ccp,fph,fsh,ksw,nsj,ptm,swb,z45
+        //incorrect: bsb,fph,fsh,kmk,nns,swb,vqn,z45
+        val printedSignals = mutableSetOf<Signal>()
+//        val unprintedSignals = (middleSignals.toMutableList())
+        var i=0
+        var i0 = i.toString().padStart(2,'0')
+        while("x$i0" in signalsByName){
+            val xSig = signalsByName["x$i0"]!!
+            val ySig = signalsByName["y$i0"]!!
+            print("x$i0 y$i0 :")
+            printedSignals.add(xSig)
+            printedSignals.add(ySig)
+            val shared = (xSig.usedBy.intersect(ySig.usedBy))
+            for (signal in shared.sortedBy { it.type }){
+                print(" [${signal.name}(${signal.shortType()})>${signal.usedByShort()}]")
+                printedSignals.add(signal)
+            }
+            val other = (xSig.usedBy + ySig.usedBy) - shared
+            for (signal in other){
+                if(signal.in1 in printedSignals && signal.in2 in printedSignals) {
+                    print(" other: [${signal.in1.name}&${signal.in2.name} > ${signal.name} (> ${signal.usedByShort()})]")
+                    printedSignals.add(signal)
+                }
+                else{
+                    print(" other: [${signal.in1.name}&${signal.in2.name} > ${signal.name} (> ${signal.usedByShort()})]")
+                }
+                throw IllegalStateException("What even is this section?")
+            }
+            println()
+//            print("    then: ")
+            val nextRow = (xSig.usedBy + ySig.usedBy).flatMap { it.usedBy } - (xSig.usedBy + ySig.usedBy)
+            for (signal in nextRow.sortedBy { it.usedBy.size }){
+                if(signal.in1 in printedSignals && signal.in2 in printedSignals) {
+                    if (signal.name[0] == 'z') println("           ${signal.in1.name}&${signal.in2.name} > ${signal.name}")
+                    else println("  [${signal.in1.name}${signal.shortType()}${signal.in2.name} > ${signal.name} (> ${signal.usedByShort()})]")
+                    printedSignals.add(signal)
+                }
+                else if (i!=0){
+                    println(" signal w/o source:  [${signal.in1.name}&${signal.in2.name} > ${signal.name} (> ${signal.usedByShort()})]")
+                    printedSignals.add(signal)
+                }
+            }
+
+//            println()
+
+            i+=1
+            i0 = i.toString().padStart(2,'0')
+        }
+        println("signals complete.")
+        for (signal in (signalsByName.values - printedSignals)){
+            when{
+                signal is Gate -> println(" leftover signal: [${signal.in1.name}&${signal.in2.name} > ${signal.name} > ${signal.usedByShort()}]")
+                else -> println(" leftover signal: ${signal.name} > ${signal.usedByShort()}]")
+            }
+        }
+
+        return nameSwaps.keys.sorted().joinToString(",")
+
+
     }
 
 
@@ -333,4 +425,19 @@ x05 AND y05 -> z00
     println("  [ms]: ${time2/1_000_000.0}")
     println("  answer: $part2Ans")
 //    check(part2Ans==) //do check while refactoring
+}
+
+fun List<Double>.median(): Double? {
+    if (this.isEmpty()) return null // Return null for an empty list
+
+    val sortedValues = this.sorted()
+    val size = sortedValues.size
+
+    return if (size % 2 == 1) {
+        sortedValues[size / 2]
+    } else {
+        val mid1 = sortedValues[size / 2 - 1]
+        val mid2 = sortedValues[size / 2]
+        (mid1 + mid2) / 2
+    }
 }
