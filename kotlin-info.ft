@@ -1,0 +1,56 @@
+some additional libraries/etc that are available. mostly notes taken from the kotlin-official AoC 2024 livestream.
+
+kotlinx-benchmark
+
+performance/profiling
+JMH?
+flamegraph
+
+
+GUI hotreloading with
+Compose Hot Reload
+'compose application recompiler'?
+https://github.com/JetBrains/compose-hot-reload
+- it's a gradle plugin?
+
+
+day 4's guest, Dave leeds, has a page on couroutines
+https://typealias.com/start/kotlin-coroutines/
+- Single-Threaded, Blocking Code
+- single-thread, nonblocking code
+	- with async, await, & yield
+	- coroutines yield() when waiting
+	- (a lot on this)
+- Multithreaded Concurrency
+	- with launch and join
+	- cooperative cancelling
+- kotlinx "contains projects that aren’t part of the standard library but serve as extensions of it."
+see also https://kotlinlang.org/docs/coroutines-and-channels.html
+- use channels to comunicate between coroutines
+
+
+kotlin notebook plugin
+		- settings -> plugins
+- new file -> kotlin notebook
+- new scratch file -> kotlin notebook
+- https://www.youtube.com/watch?v=GFnmujSH95w&list=PLlFc5cFwUnmwHaD3-qeoLHnho_PY2g9JX&index=5
+		- 24:00 load the challange page and display it in the notebook
+		- 28:00 better way: https://github.com/toldoven/aoc-kotlin-notebook
+- graph drawer = data-tree visualizer: https://github.com/breandan/galoisenne
+- 3 cell types: code, markdown, AI
+
+alt concurrency option:
+arrow library's powrMap function
+
+https://www.youtube.com/watch?v=XOsBwtPM1UI&list=PLlFc5cFwUnmwHaD3-qeoLHnho_PY2g9JX&index=7
+52:53 sequence builder
+
+
+https://www.youtube.com/watch?v=7ct8eBdpavQ&t=7s
+(day 9 livestream)
+- compose multiplatform
+	- develop stunning shared UIs for Android, iO, desktop, and web
+	- https://www.jetbrains.com/compose-multiplatform/
+	- with Kotlin, with established APIs
+
+https://plugins.jetbrains.com/plugin/22282-jetbrains-ai-assistant
