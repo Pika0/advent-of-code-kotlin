@@ -27,7 +27,7 @@ data class DataMiddle(val in1:ChainingUpdate): ChainingUpdate {
     init {
         in1.addUser(this) //3 - call start1.addUser(mid1)
     }
-    override val usedBy: MutableSet<ChainingUpdate> = mutableSetOf() //nullability error if this line is after 'init{..}'
+    override val usedBy: MutableSet<ChainingUpdate> = mutableSetOf() //nullability error if this line is after 'init{...}'
 }
 
 
